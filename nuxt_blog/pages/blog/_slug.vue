@@ -1,5 +1,6 @@
 <template>
   <section class="slug">
+    <p>{{ post.fields.category.fields.name }}</p>
     <h1 class="slug_title">{{ post.fields.title }}</h1>
     <p class="slug_date">
       {{ (new Date(post.fields.publishedAt)).toLocaleDateString() }}

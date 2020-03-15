@@ -5,7 +5,9 @@
       :title="post.fields.title"
       :slug="post.fields.slug"
       :headerImage="post.fields.headerImage"
-      :publishedAt="post.fields.publishedAt"/>
+      :publishedAt="post.fields.publishedAt"
+      :category="post.fields.category.fields"
+    />
   </section>
 </template>
 
@@ -24,6 +26,7 @@ export default {
       'content_type': env.CTF_BLOG_POST_TYPE_ID,
       order: '-fields.publishedAt',
     }).then(entries => {
+      console.log(entries)
       return {
         posts: entries.items
       }

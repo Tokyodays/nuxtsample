@@ -5,19 +5,31 @@
       <h1 class="card_title">{{ title }}</h1>
       <p class="card_date">{{ (new Date(publishedAt)).toLocaleDateString() }}</p>
     </nuxt-link>
+    <p :class="categoryColor(category)">{{ category.name }}</p>
   </article>
 </template>
 
 <script>
 export default {
-  props: ['title', 'slug', 'headerImage', 'publishedAt']
+  props: ['title', 'slug', 'headerImage', 'publishedAt', 'category'],
+  computed: {    
+    categoryColor() {
+      return (category) => {
+        switch (category.name) {
+          case '松戸': return 'card_color1'
+          case '知恵蔵師匠': return 'card_color2'
+          default: return 'color_default'
+        }
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
 .card {
   width: 300px;
-  height: 200px;
+  height: 300px;
   box-shadow: 1px 2px 3px 1px rgba(0,0,0,0.2);
   border: 0.5px solid rgb(57, 72, 85);
   padding: 10px 20px;
@@ -37,5 +49,14 @@ export default {
 }
 .card_image {
   max-height: 100px;
+}
+.card_color1 {
+  background-color: #C73A31;
+}
+.card_color2 {
+  background-color: #236244;
+}
+.color_default {
+  background-color: #666;
 }
 </style>
