@@ -1,12 +1,7 @@
-const {getConfigForKeys} = require('./lib/config.js')
-const ctfConfig = getConfigForKeys([
-  'CTF_BLOG_POST_TYPE_ID',
-  'CTF_SPACE_ID',
-  'CTF_CDA_ACCESS_TOKEN',
-  'CTF_CDA_PREVIEW_ACCESS_TOKEN'
-])
-const {createClient} = require('./plugins/contentful')
-const cdaClient = createClient(ctfConfig)
+require('dotenv').config()
+
+const {contentfulCreateClient} = require('./plugins/contentful')
+const cdaClient = contentfulCreateClient()
 
 module.exports = {
   /*
@@ -47,17 +42,26 @@ module.exports = {
   },
 
   modules: [
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
+    '@nuxtjs/axios',
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/dotenv'
   ],
 
   plugins: [
     { src: '~plugins/contentful' } 
   ],
 
+  router: {
+    middleware: [
+      'getContentful'
+    ]
+  },
+
   generate: {
     routes () {
       return cdaClient.getEntries({
-        'content_type': ctfConfig.CTF_BLOG_POST_TYPE_ID
+        'content_type': cdaClient.CTF_BLOG_POST_TYPE_ID
       }).then(entries => {
         return [
           ...entries.items.map(entry => `/blog/${entry.fields.slug}`)
@@ -67,10 +71,9 @@ module.exports = {
   },
 
   env: {
-    CTF_SPACE_ID: ctfConfig.CTF_SPACE_ID,
-    CTF_CDA_ACCESS_TOKEN: ctfConfig.CTF_CDA_ACCESS_TOKEN,
-    CTF_CDA_PREVIEW_ACCESS_TOKEN: ctfConfig.CTF_CDA_PREVIEW_ACCESS_TOKEN,
-    CTF_BLOG_POST_TYPE_ID: ctfConfig.CTF_BLOG_POST_TYPE_ID
+    CTF_SPACE_ID: cdaClient.CTF_SPACE_ID,
+    CTF_CDA_ACCESS_TOKEN: cdaClient.CTF_CDA_ACCESS_TOKEN,
+    CTF_BLOG_POST_TYPE_ID: cdaClient.CTF_BLOG_POST_TYPE_ID
   },
 
   markdownit: {

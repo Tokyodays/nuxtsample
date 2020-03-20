@@ -13,26 +13,18 @@
 
 <script>
 import Card from '~/components/card.vue'
-import {createClient} from '~/plugins/contentful.js'
+import { mapState, mapGetters } from 'vuex'
 
-const client = createClient()
 export default {
   transition: 'slide-left',
   components: {
     Card
   },
-  async asyncData ({ env, params }) {
-    return await client.getEntries({
-      'content_type': env.CTF_BLOG_POST_TYPE_ID,
-      order: '-fields.publishedAt',
-    }).then(entries => {
-      console.log(entries)
-      return {
-        posts: entries.items
-      }
-    })
-    .catch(console.error)
+  computed: {
+    ...mapState(['posts']),
+    //...mapGetters(['setEyeCatch', 'draftChip', 'linkTo'])
   }
+
 }
 </script>
 

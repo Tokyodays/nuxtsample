@@ -1,7 +1,9 @@
 <template>
   <article class="card">
-    <nuxt-link v-bind:to="{ name: 'blog-slug', params: { slug: slug }}" class="wrapper">
-      <img class="card_image" v-bind:src="headerImage.fields.file.url"/>
+    <nuxt-link :to="{ name: 'blog-slug', params: { slug: slug }}" class="wrapper">
+      <img class="card_image" 
+      :src="setEyeCatch(headerImage).url"
+      :alt="setEyeCatch(headerImage).title" />
       <h1 class="card_title">{{ title }}</h1>
       <p class="card_date">{{ (new Date(publishedAt)).toLocaleDateString() }}</p>
     </nuxt-link>
@@ -10,9 +12,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: ['title', 'slug', 'headerImage', 'publishedAt', 'category'],
-  computed: {    
+  computed: {
+    ...mapGetters(['setEyeCatch']),
     categoryColor() {
       return (category) => {
         switch (category.name) {

@@ -5,15 +5,15 @@
     <p class="slug_date">
       {{ (new Date(post.fields.publishedAt)).toLocaleDateString() }}
     </p>
-    <img class="slug_image" v-bind:src="post.fields.headerImage.fields.file.url"/>
+    <img class="slug_image" :src="post.fields.headerImage.fields.file.url"/>
     <div v-html="$md.render(post.fields.body)"></div>
   </section>
 </template>
 
 <script>
-import {createClient} from '~/plugins/contentful.js'
+import {contentfulCreateClient} from '~/plugins/contentful.js'
+const client = contentfulCreateClient()
 
-const client = createClient()
 export default {
   transition: 'slide-left',
   components: {
