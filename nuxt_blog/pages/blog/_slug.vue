@@ -5,19 +5,23 @@
     <p class="slug_date">
       {{ (new Date(post.fields.publishedAt)).toLocaleDateString() }}
     </p>
-    <img class="slug_image" :src="post.fields.headerImage.fields.file.url"/>
+    <img class="slug_image" :src="setEyeCatch(post.fields.headerImage).url"/>
     <div v-html="$md.render(post.fields.body)"></div>
   </section>
 </template>
 
 <script>
 import {contentfulCreateClient} from '~/plugins/contentful.js'
+import { mapState, mapGetters } from 'vuex'
 const client = contentfulCreateClient()
 
 export default {
   transition: 'slide-left',
   components: {
     
+  },
+  computed: {
+    ...mapGetters(['setEyeCatch']),
   },
   async asyncData ({ env, params }) {
     return await client.getEntries({
