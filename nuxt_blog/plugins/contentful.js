@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const contentful = require('contentful')
 const defaultConfig = (process.env.NODE_ENV === 'development') ? {
   CTF_BLOG_POST_TYPE_ID: process.env.CTF_BLOG_POST_TYPE_ID,
