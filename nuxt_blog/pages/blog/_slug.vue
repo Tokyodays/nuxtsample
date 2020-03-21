@@ -11,9 +11,16 @@
 </template>
 
 <script>
-import {contentfulCreateClient} from '~/plugins/contentful.js'
 import { mapState, mapGetters } from 'vuex'
-const client = contentfulCreateClient()
+const {getConfigForKeys} = require('@/lib/config.js')
+const ctfConfig = getConfigForKeys([
+  'CTF_BLOG_POST_TYPE_ID',
+  'CTF_SPACE_ID',
+  'CTF_CDA_ACCESS_TOKEN',
+  'host'
+])
+const {contentfulCreateClient} = require('@/plugins/contentful')
+const client = contentfulCreateClient(ctfConfig)
 
 export default {
   transition: 'slide-left',

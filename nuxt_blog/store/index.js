@@ -1,6 +1,13 @@
 import defaultEyeCatch from '~/assets/images/defaultEyeCatch.jpg'
-import {contentfulCreateClient} from '~/plugins/contentful.js'
-const client = contentfulCreateClient()
+const {getConfigForKeys} = require('@/lib/config.js')
+const ctfConfig = getConfigForKeys([
+  'CTF_BLOG_POST_TYPE_ID',
+  'CTF_SPACE_ID',
+  'CTF_CDA_ACCESS_TOKEN',
+  'host'
+])
+const {contentfulCreateClient} = require('@/plugins/contentful')
+const client = contentfulCreateClient(ctfConfig)
 
 // 追記
 export const state = () => ({
