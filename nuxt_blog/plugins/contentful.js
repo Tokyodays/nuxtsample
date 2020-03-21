@@ -13,6 +13,7 @@ const defaultConfig = (process.env.NODE_ENV === 'development') ? {
 
 module.exports = {
   contentfulCreateClient(config = defaultConfig) {
+    console.log(config.host)
     return contentful.createClient({
       space: config.CTF_SPACE_ID,
       accessToken: config.CTF_CDA_ACCESS_TOKEN,
