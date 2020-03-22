@@ -1,26 +1,17 @@
 <template>
   <section class="slug">
-    <p>{{ post.fields.category.fields.name }}</p>
-    <h1 class="slug_title">{{ post.fields.title }}</h1>
+    <p>{{ currentPost.fields.category.fields.name }}</p>
+    <h1 class="slug_title">{{ currentPost.fields.title }}</h1>
     <p class="slug_date">
-      {{ (new Date(post.fields.publishedAt)).toLocaleDateString() }}
+      {{ (new Date(currentPost.fields.publishedAt)).toLocaleDateString() }}
     </p>
-    <img class="slug_image" :src="setEyeCatch(post.fields.headerImage).url"/>
-    <div v-html="$md.render(post.fields.body)"></div>
+    <img class="slug_image" :src="setEyeCatch(currentPost.fields.headerImage).url"/>
+    <div v-html="$md.render(currentPost.fields.body)"></div>
   </section>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-const {getConfigForKeys} = require('@/lib/config.js')
-const ctfConfig = getConfigForKeys([
-  'CTF_BLOG_POST_TYPE_ID',
-  'CTF_SPACE_ID',
-  'CTF_CDA_ACCESS_TOKEN',
-  'host'
-])
-const {contentfulCreateClient} = require('@/plugins/contentful')
-const client = contentfulCreateClient(ctfConfig)
 
 export default {
   transition: 'slide-left',
@@ -30,17 +21,14 @@ export default {
   computed: {
     ...mapGetters(['setEyeCatch']),
   },
-  async asyncData ({ env, params }) {
-    return await client.getEntries({
-      'content_type': env.CTF_BLOG_POST_TYPE_ID,
-      'fields.slug': params.slug,
-      order: '-sys.createdAt'
-    }).then(entries => {
-      return {
-        post: entries.items[0],
-      }
-    })
-    .catch(console.error)
+  async asyncData({ payload, store, params, error }) {
+    const currentPost = payload || await store.state.posts.find(post => post.fields.slug === params.slug)
+
+    if (currentPost) {
+      return { currentPost }
+    } else {
+      return error({ statusCode: 400 })
+    }
   }
 }
 </script>
