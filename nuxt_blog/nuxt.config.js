@@ -67,14 +67,17 @@ module.exports = {
       'getContentful'
     ]
   },
-
   generate: {
-    routes () {
-      return client.getEntries({
-        'content_type': ctfConfig.CTF_BLOG_POST_TYPE_ID
-      }).then(entries => {
+    routes() {
+      return Promise.all([
+        client.getEntries({
+          content_type: ctfConfig.CTF_BLOG_POST_TYPE_ID
+        })
+      ]).then(([ posts ]) => {
         return [
-          ...entries.items.map(entry => `/blog/${entry.fields.slug}`)
+          ...posts.items.map(post => {
+            return { route: `blog/${post.fields.slug}`, payload: post }
+          })
         ]
       })
     }
