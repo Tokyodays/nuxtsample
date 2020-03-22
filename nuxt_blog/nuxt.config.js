@@ -11,6 +11,7 @@ const client = contentfulCreateClient(ctfConfig)
 require('dotenv').config()
 
 module.exports = {
+
   /*
   ** Headers of the page
   */
