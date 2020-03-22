@@ -13,7 +13,7 @@
 
 <script>
 import Card from '~/components/card.vue'
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   transition: 'slide-left',
@@ -21,8 +21,7 @@ export default {
     Card
   },
   computed: {
-    ...mapState(['posts']),
-    //...mapGetters(['setEyeCatch', 'draftChip', 'linkTo'])
+    ...mapState(['posts'])
   }
 
 }

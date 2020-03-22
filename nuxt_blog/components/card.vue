@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 export default {
   props: ['title', 'slug', 'headerImage', 'publishedAt', 'category'],
   computed: {
-    ...mapGetters(['setEyeCatch']),
+    ...mapGetters(['setEyeCatch', 'linkTo']),
     categoryColor() {
       return (category) => {
         switch (category.name) {

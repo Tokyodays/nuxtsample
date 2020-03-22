@@ -18,6 +18,9 @@ export const getters = {
   setEyeCatch: () => (image) => {
     if (!!image && !!image.fields) return { url: `https:${image.fields.file.url}`, title: image.fields.title }
     else return { url: defaultEyeCatch, title: 'defaultImage' }
+  },
+  linkTo: () => (name, obj) => {
+    return { name: `${name}-slug`, params: { slug: obj.fields.slug } }
   }
 }
 
